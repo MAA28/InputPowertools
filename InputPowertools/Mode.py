@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class Input(Enum):
+class Mode(Enum):
     NORMAL = 0
     ALPHA = 1
     NUMERIC = 2

@@ -1,9 +1,24 @@
 import re
-from colorama import Style
-from .default_config import default_config
-from .Input import Input
+from colorama import Style, Fore
+from .Mode import Mode
 
 std_input = input
+
+default_config = {
+    'add space after question': True,
+    'number of allowed errors': 10,
+    'color schema': {
+        'error': Fore.RED,
+        'question': {
+            'normal': Fore.GREEN,
+            'option': Fore.YELLOW
+        },
+        'options': {
+            'index': Fore.CYAN,
+            'answer': Fore.BLUE
+        }
+    }
+}
 
 
 def numeric_input_handler(question: str, domain: callable, config):
@@ -32,7 +47,7 @@ def options_input_handler(question: str, options, config):
 
     option_config = config
     option_config['color schema']['question']['normal'] = option_config['color schema']['question']['option']
-    index = input(f"Select option {config['color schema']['options']['index']}[1-{len(options)}]{Style.RESET_ALL}:", Input.NUMERIC, domain=lambda x: x in range(1, 1 + len(options)), config=option_config) - 1
+    index = input(f"Select option {config['color schema']['options']['index']}[1-{len(options)}]{Style.RESET_ALL}:", Mode.NUMERIC, domain=lambda x: x in range(1, 1 + len(options)), config=option_config) - 1
     return options[index], index
 
 
@@ -50,21 +65,21 @@ def alpha_input_handler(question: str, config):
     return
 
 
-def input(question: str, type: Input = Input.NORMAL, options=None, domain: callable = lambda x: True, config=None):
+def input(question: str, type: Mode = Mode.NORMAL, options=None, domain: callable = lambda x: True, config=None):
     # initialize config
     if config is None:
         config = default_config
 
     # for numeric
-    if type == Input.NUMERIC:
+    if type == Mode.NUMERIC:
         return numeric_input_handler(question, domain, config)
 
     # for options
-    if type == Input.OPTIONS:
+    if type == Mode.OPTIONS:
         return options_input_handler(question, options, config)
 
     # for alpha
-    if type == Input.ALPHA:
+    if type == Mode.ALPHA:
         return alpha_input_handler(question, config)
 
     return std_input(config['color schema']['question']['normal'] + question + Style.RESET_ALL + (
