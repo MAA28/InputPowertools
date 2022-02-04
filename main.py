@@ -1,7 +1,7 @@
 from InputPowertools import input, Mode, cli
 
 
-def main(a, b: str, c: int = 2):
+def main(a, d: bool, b: str, c: int = 2):
     """
     HI
     Iashuiahsufi
@@ -10,6 +10,7 @@ def main(a, b: str, c: int = 2):
     :param c: lol
     :return: Nothing
     """
+    print(a, b * c)
     print(f"Result: {input('Type your name:', Mode.ALPHA)}")
     print(f"Result: {input('How old are you:', Mode.NUMERIC, domain=lambda x: x % 1 == 0)}")
     print(f"Result: {input('Are you a what kind of person are you?', Mode.OPTIONS, options=['Cat person', 'Dog person'])}")

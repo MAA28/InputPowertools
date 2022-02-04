@@ -1,3 +1,4 @@
+import re
 import sys
 import inspect
 from colorama import Fore, Style
@@ -73,4 +74,37 @@ def run(function: callable, config=None):
                 if parameter.default != parameter.empty:
                     print(f"{config['prefix']['flags']}{config['color schema']['key']}Default: {config['color schema']['default']}{parameter.default}{Style.RESET_ALL}")
         else:
-            pass
+            # parse args
+            parameters = dict([
+                (
+                    (split_parameter := parameter.split(' '))[0],
+                    True if len(split_parameter) == 1 else
+                    (
+                        split_parameter[1] if len(split_parameter) == 2 else split_parameter[1:]
+                    )
+                )
+                for parameter in ' '.join(sys.argv).split(' --')[1:] if parameter != ''
+            ])
+            for parameter in parameters:
+                value = parameters[parameter]
+                if isinstance(value, str):
+                    if re.fullmatch(r'[+|-]?\d+(.\d+)?', value):
+                        float_val = float(value)
+                        if float_val % 1 == 0:
+                            parameters[parameter] = int(float_val)
+                            continue
+                        parameters[parameter] = float_val
+
+            # TODO: Parse str with space properly
+
+            # do type check
+            for key in parameters:
+                if key not in function_parameters.keys():
+                    raise KeyError(f'\'{key}\' is not requested!')
+
+                parameter = function_parameters[key]
+
+                if not (parameter.annotation.__name__ == "_empty" or isinstance(parameters[key], parameter.annotation)):
+                    raise TypeError(f'{key} expected {parameter.annotation.__name__} but was given {parameters[key]}')
+
+            function(**parameters)
