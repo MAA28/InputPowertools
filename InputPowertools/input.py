@@ -32,6 +32,8 @@ class Mode(Enum):
 
 
 def numeric_input_handler(question: str, domain: callable, default: int or float, config):
+    if default:
+        assert domain(default)
     for _ in range(config['number of allowed errors']):
         str_value = std_input(f"{config['color schema']['question']['normal']}{question} {config['color schema']['default'] + f'({default})' if default else ''}{Style.RESET_ALL}{(' ' if config['add space after question'] else '')}")
         if default and str_value == '':
@@ -50,7 +52,8 @@ def numeric_input_handler(question: str, domain: callable, default: int or float
 
 # TODO: make it switchable with \x08 
 def options_input_handler(question: str, options, default: int, config):
-    assert default in range(len(options))
+    if default:
+        assert default in range(len(options))
     print(config['color schema']['question']['normal'] + question + Style.RESET_ALL + (' ' if config['add space after question'] else ''))
 
     for i, option in enumerate(options):
