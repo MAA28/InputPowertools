@@ -32,7 +32,44 @@ def run(function: callable, config=None):
     if config is None:
         config = default_config
 
+    # parsing the function_parameters
     function_parameters = inspect.signature(function).parameters
+
+    # parsing the docstring
+    if function.__doc__:
+        docstring = parse(function.__doc__)
+    parameter_descriptions = dict([
+        (meta.args[1], meta.description)
+        for meta in docstring.meta if meta.args[0] != 'return' and meta.description != ''
+    ]) if docstring is not None else {}
+
+    # parsing the sys.argv
+    args = sys.argv[1:]
+    parameters_list = []
+    for arg in args:
+        if len(arg) >= 3 and arg[:2] == '--':
+            parameters_list.append([arg[2:], []])
+        else:
+            value = arg
+            if isinstance(value, str):
+                if value == 'True' or value == 'False':
+                    parameters_list[-1][1].append(value == 'True')
+                    continue
+                if re.fullmatch(r'[+|-]?\d+(.\d+)?', value):
+                    float_val = float(value)
+                    if float_val % 1 == 0:
+                        parameters_list[-1][1].append(int(float_val))
+                        continue
+                    parameters_list[-1][1].append(float_val)
+                    continue
+            parameters_list[-1][1].append(arg)
+    for parameter_list in parameters_list:
+        if len(parameter_list[1]) == 1:
+            parameter_list[1] = parameter_list[1][0]
+        elif len(parameter_list[1]) == 0:
+            parameter_list[1] = True
+    parameters = dict(parameters_list)
+
 
     if len(function_parameters) == 0:
         # function doesn't take any parameters, so I just run the function
@@ -42,8 +79,7 @@ def run(function: callable, config=None):
             print(f"For more information: {config['color schema']['command']}{sys.argv[0]} --help{Style.RESET_ALL}")
         elif sys.argv[1] == '--help':
             docstring = None
-            if function.__doc__:
-                docstring = parse(function.__doc__)
+            if docstring:
                 print(config['prefix']['short description'] + config['color schema']['short docstring'] + docstring.short_description + Style.RESET_ALL)
                 if docstring.long_description:
                     print(f"{config['prefix']['long description']}{config['color schema']['long docstring']} {docstring.long_description + Style.RESET_ALL}")
@@ -55,11 +91,6 @@ def run(function: callable, config=None):
             print(f"{config['prefix']['option description']}{config['color schema']['description']}Prints out information about the program.{Style.RESET_ALL}")
             print(f"{config['prefix']['flags']}{config['color schema']['key']}Type:    {config['color schema']['type']}bool{Style.RESET_ALL}")
             print(f"{config['prefix']['flags']}{config['color schema']['key']}Default: {config['color schema']['default']}False{Style.RESET_ALL}")
-
-            parameter_descriptions = dict([
-                (meta.args[1], meta.description)
-                for meta in docstring.meta if meta.args[0] != 'return' and meta.description != ''
-            ]) if docstring is not None else {}
 
             for key in function_parameters.keys():
                 parameter = function_parameters[key]
@@ -74,33 +105,6 @@ def run(function: callable, config=None):
                 if parameter.default != parameter.empty:
                     print(f"{config['prefix']['flags']}{config['color schema']['key']}Default: {config['color schema']['default']}{parameter.default}{Style.RESET_ALL}")
         else:
-            # parse args
-            args = sys.argv[1:]
-            parameters_list = []
-            for arg in args:
-                if len(arg) >= 3 and arg[:2] == '--':
-                    parameters_list.append([arg[2:], []])
-                else:
-                    value = arg
-                    if isinstance(value, str):
-                        if value == 'True' or value == 'False':
-                            parameters_list[-1][1].append(value == 'True')
-                            continue
-                        if re.fullmatch(r'[+|-]?\d+(.\d+)?', value):
-                            float_val = float(value)
-                            if float_val % 1 == 0:
-                                parameters_list[-1][1].append(int(float_val))
-                                continue
-                            parameters_list[-1][1].append(float_val)
-                            continue
-                    parameters_list[-1][1].append(arg)
-
-            for parameter_list in parameters_list:
-                if len(parameter_list[1]) == 1:
-                    parameter_list[1] = parameter_list[1][0]
-
-            parameters = dict(parameters_list)
-
             # do type check
             for key in parameters:
                 if key not in function_parameters.keys():
