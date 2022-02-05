@@ -1,3 +1,4 @@
+import getopt
 import re
 import sys
 import inspect
@@ -75,27 +76,31 @@ def run(function: callable, config=None):
                     print(f"{config['prefix']['flags']}{config['color schema']['key']}Default: {config['color schema']['default']}{parameter.default}{Style.RESET_ALL}")
         else:
             # parse args
-            parameters = dict([
-                (
-                    (split_parameter := parameter.split(' '))[0],
-                    True if len(split_parameter) == 1 else
-                    (
-                        split_parameter[1] if len(split_parameter) == 2 else split_parameter[1:]
-                    )
-                )
-                for parameter in ' '.join(sys.argv).split(' --')[1:] if parameter != ''
-            ])
-            for parameter in parameters:
-                value = parameters[parameter]
-                if isinstance(value, str):
-                    if re.fullmatch(r'[+|-]?\d+(.\d+)?', value):
-                        float_val = float(value)
-                        if float_val % 1 == 0:
-                            parameters[parameter] = int(float_val)
+            args = sys.argv[1:]
+            parameters_list = []
+            for arg in args:
+                if len(arg) >= 3 and arg[:2] == '--':
+                    parameters_list.append([arg[2:], []])
+                else:
+                    value = arg
+                    if isinstance(value, str):
+                        if value == 'True' or value == 'False':
+                            parameters_list[-1][1].append(value == 'True')
                             continue
-                        parameters[parameter] = float_val
+                        if re.fullmatch(r'[+|-]?\d+(.\d+)?', value):
+                            float_val = float(value)
+                            if float_val % 1 == 0:
+                                parameters_list[-1][1].append(int(float_val))
+                                continue
+                            parameters_list[-1][1].append(float_val)
+                            continue
+                    parameters_list[-1][1].append(arg)
 
-            # TODO: Parse str with space properly
+            for parameter_list in parameters_list:
+                if len(parameter_list[1]) == 1:
+                    parameter_list[1] = parameter_list[1][0]
+
+            parameters = dict(parameters_list)
 
             # do type check
             for key in parameters:
@@ -103,7 +108,7 @@ def run(function: callable, config=None):
                     raise KeyError(f'\'{key}\' is not requested!')
 
                 parameter = function_parameters[key]
-
+                print(parameters[key], type(parameters[key]), parameter.annotation)
                 if not (parameter.annotation.__name__ == "_empty" or isinstance(parameters[key], parameter.annotation)):
                     raise TypeError(f'{key} expected {parameter.annotation.__name__} but was given {parameters[key]}')
 

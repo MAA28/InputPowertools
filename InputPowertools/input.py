@@ -1,6 +1,7 @@
 import re
+from enum import Enum
+
 from colorama import Style, Fore
-from .Mode import Mode
 
 std_input = input
 
@@ -19,6 +20,13 @@ default_config = {
         }
     }
 }
+
+
+class Mode(Enum):
+    NORMAL = 0
+    ALPHA = 1
+    NUMERIC = 2
+    OPTIONS = 3
 
 
 def numeric_input_handler(question: str, domain: callable, config):
@@ -65,21 +73,21 @@ def alpha_input_handler(question: str, config):
     return
 
 
-def input(question: str, type: Mode = Mode.NORMAL, options=None, domain: callable = lambda x: True, config=None):
+def input(question: str, mode: Mode = Mode.NORMAL, options=None, domain: callable = lambda x: True, config=None):
     # initialize config
     if config is None:
         config = default_config
 
     # for numeric
-    if type == Mode.NUMERIC:
+    if mode == Mode.NUMERIC:
         return numeric_input_handler(question, domain, config)
 
     # for options
-    if type == Mode.OPTIONS:
+    if mode == Mode.OPTIONS:
         return options_input_handler(question, options, config)
 
     # for alpha
-    if type == Mode.ALPHA:
+    if mode == Mode.ALPHA:
         return alpha_input_handler(question, config)
 
     return std_input(config['color schema']['question']['normal'] + question + Style.RESET_ALL + (
