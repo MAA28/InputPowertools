@@ -1,4 +1,6 @@
-from InputPowertools import input, cli, Mode
+from src.InputPowertools import input, Mode
+from src.InputPowertools import cli
+
 
 def test_cli(a, b: str, c: list, d: bool = False):
     """
@@ -15,9 +17,9 @@ def test_cli(a, b: str, c: list, d: bool = False):
 
 
 def test_input():
-    print(f"Result: {input('Type your name:', Mode.ALPHA, confirm=True)}")
-    print(f"Result: {input('How old are you:', Mode.NUMERIC, confirm=True, domain=lambda x: x % 1 == 0)}")
-    print(f"Result: {input('Are you a what kind of person are you?', Mode.OPTIONS, confirm=True, options=['Cat person', 'Dog person', 'Bird person'])}")
+    print(f"Result: {input('Type your name:', Mode.ALPHA, default='Hannes')}")
+    # print(f"Result: {input('How old are you:', Mode.NUMERIC, confirm=True, domain=lambda x: x % 1 == 0)}")
+    print(f"Result: {input('Are you a what kind of person are you?', Mode.OPTIONS, options=['Cat person', 'Dog person', 'Bird person'])}")
 
 
 if __name__ == '__main__':

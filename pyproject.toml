@@ -1,0 +1,11 @@
+[build-system]
+requires = [
+    "re",
+    "sys",
+    "inspect",
+    "colorama",
+    "docstring_parser",
+    "enum",
+    "typing"
+]
+build-backend = "setuptools.build_meta"
