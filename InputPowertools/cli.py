@@ -1,4 +1,3 @@
-import getopt
 import re
 import sys
 import inspect
@@ -108,7 +107,6 @@ def run(function: callable, config=None):
                     raise KeyError(f'\'{key}\' is not requested!')
 
                 parameter = function_parameters[key]
-                print(parameters[key], type(parameters[key]), parameter.annotation)
                 if not (parameter.annotation.__name__ == "_empty" or isinstance(parameters[key], parameter.annotation)):
                     raise TypeError(f'{key} expected {parameter.annotation.__name__} but was given {parameters[key]}')
 
