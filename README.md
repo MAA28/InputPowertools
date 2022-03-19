@@ -3,9 +3,8 @@
 ## Prolog
 I love using **c**ommand **l**ine **i**nterfaces and I think most people like building these small tools as well, but its really annoying to have to build the interface between the user and your program, hence I build this python package to take care of this part for you.
 ## Examples
-### Intro
-#### input()
-##### Alpha
+### input()
+#### Alpha
 ```
 >>> print(f"Result: {input('Type your name:', Mode.ALPHA)}")
 
@@ -14,7 +13,7 @@ Type your name:  >? 123
 Type your name:  >? Malte
 Result: Malte
 ```
-##### Numeric
+#### Numeric
 ```
 >>> print(f"Result: {input('How old are you:', Mode.NUMERIC, domain=lambda x: x % 1 == 0)}")
 
@@ -25,7 +24,7 @@ How old are you:  >? 13.5
 How old are you:  >? 16
 Result: 16
 ```
-##### Options
+#### Options
 ```
 >>> print(f"Result: {input(
     'Are you a what kind of person are you?',
@@ -46,22 +45,29 @@ Select option [1-3]:  >? 4
 Select option [1-3]:  >? 2
 Result: (1, 'Dog person')
 ```
-#### Defaults
-##### Just pressing enter
+### Regex
+```
+What is your favorite hex color?  >? red
+🛑 Please enter a value that fits this description: Hexadecimal Color. Something like #123 or #FF32CD
+What is your favorite hex color?  >? #F00
+Result: #F00
+```
+### Defaults
+#### Just pressing enter
 ```
 >>> print(f"Result: {input('Type your name:', Mode.ALPHA, default='Hannes')}")
 
 Type your name: (Hannes) >? 
 Result: Hannes
 ```
-##### Typing something else
+#### Typing something else
 ```
 >>> print(f"Result: {input('Type your name:', Mode.ALPHA, default='Hannes')}")
 
 Type your name: (Hannes) >? Malte
 Result: Malte
 ```
-#### Confirm
+### Confirm
 ```
 >>> print(f"Result: {input('Type your name:', Mode.ALPHA, confrim=True)}")
 
@@ -72,4 +78,3 @@ Do you want to select "Malte"?
 Select option [1-2]: (2) >? 1
 Result: Malte
 ```
-
