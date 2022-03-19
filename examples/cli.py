@@ -7,6 +7,7 @@ def test_cli(a, b: str, c: List[str], d: bool = False):
     """
     Some function
 
+    A function that is truly amazing... wow!
 
     :param a: Is a variable called a
     :param b: Is a variable called b
@@ -18,4 +19,7 @@ def test_cli(a, b: str, c: List[str], d: bool = False):
 
 
 if __name__ == '__main__':
-    cli.run(test_cli)  # run python cli.py --a lol --b "this is a value with spaces" --c 4 2 "test123" --d
+    cli.run(test_cli)
+    # run python cli.py
+    # run python cli.py --help
+    # run python cli.py --a lol --b "this is a value with spaces" --c 4 2 "test123" --d
