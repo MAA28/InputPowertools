@@ -1,4 +1,4 @@
-from src.InputPowertools import input, Mode
+from InputPowertools import input, Mode
 
 
 def test_input():

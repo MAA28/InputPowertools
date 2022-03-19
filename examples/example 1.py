@@ -1,6 +1,6 @@
 from typing import List
 
-from src.InputPowertools import cli
+from InputPowertools import cli
 
 
 def test_cli(a, b: str, c: List[str], d: bool = False):
