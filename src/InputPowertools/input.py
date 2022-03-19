@@ -34,12 +34,15 @@ class Mode(Enum):
 
     > NUMERIC is similar to NORMAL, but it only accepts answers that are full matches for re'[+|-]?\d+(.\d+)?' this regular expression, than the answer will be returned as a float, but if the answer does all so not contain a . than the answer will be returned as a int.
 
+    > REGEX only accepts answers that fit the entered regex
+
     > OPTIONS this will prompt the user with a selection (it is best just to test it or to look at the docs to understand what I mean), when the user chooses one of these it will return the answer in this form (index, options[index]).
     """
     NORMAL = 0
     ALPHA = 1
     NUMERIC = 2
-    OPTIONS = 3
+    REGEX = 3
+    OPTIONS = 4
 
 
 def _numeric_input_handler(question: str, confirm: bool, domain: callable, default: int or float, config):
@@ -115,10 +118,41 @@ def _alpha_input_handler(question: str, confirm: bool, default: str, config):
     return False
 
 
+def _regex_input_handler(question: str, confirm: bool, regex: Union[re.Pattern, str], regex_description: str, default: str, config):
+    if default:
+        assert regex.fullmatch(default)
+    for _ in range(config['number of allowed errors']):
+        value = std_input(f"{config['color schema']['question']['normal']}{question} {config['color schema']['default'] + f'({default})' if default else ''}{Style.RESET_ALL}{(' ' if config['add space after question'] else '')}")
+        if default and value == '':
+            if confirm and input(f'Do you want to select \"{default}\"?', Mode.OPTIONS, default=1, options=['yes', 'no'])[1] == 'yes':
+                return default
+            elif confirm:
+                print(f"{config['color schema']['error']}{'🛑 ' if config['use emojis'] else ''}You rejected the value. {Style.RESET_ALL}")
+                continue
+            else:
+                return default
+        if re.fullmatch(regex, value):
+            if confirm and input(f'Do you want to select \"{value}\"?', Mode.OPTIONS, default=1, options=['yes', 'no'])[1] == 'yes':
+                return value
+            elif confirm:
+                print(f"{config['color schema']['error']}{'🛑 ' if config['use emojis'] else ''}You rejected the value. {Style.RESET_ALL}")
+                continue
+            else:
+                return value
+        else:
+            if regex_description:
+                print(f"{config['color schema']['error']}{'🛑 ' if config['use emojis'] else ''}Please enter a value that fits this description: {regex_description}{Style.RESET_ALL}")
+            else:
+                print(f"{config['color schema']['error']}{'🛑 ' if config['use emojis'] else ''}Please enter a value that fits the regex pattern {regex.pattern.title() if isinstance(regex, re.Pattern) else regex}...{Style.RESET_ALL}")
+    print(f"{config['color schema']['error']}{'🛑 ' if config['use emojis'] else ''}Terminated after {config['number f allowed errors']} errors! {Style.RESET_ALL}")
+    return False
+    pass
+
+
 std_input = input
 
 
-def input(question: str, mode: Mode = Mode.NORMAL, confirm: bool = False, default: Union[str, int, float] = None, options: list[str] = None, domain: Callable[[Union[int, float]], bool] = lambda x: True, config: dict = None) -> Union[str, int, float, tuple[int, str]]:
+def input(question: str, mode: Mode = Mode.NORMAL, confirm: bool = False, default: Union[str, int, float] = None, options: list[str] = None, domain: Callable[[Union[int, float]], bool] = lambda x: True, regex: Union[re.Pattern, str] = None, regex_description: str = None, config: dict = None) -> Union[str, int, float, tuple[int, str]]:
     """
     Kind of like an addon on to the normal input function.
 
@@ -128,8 +162,10 @@ def input(question: str, mode: Mode = Mode.NORMAL, confirm: bool = False, defaul
     :param default: What should be the default answer? (This will be returned if the user just hits and enter but if confirm is True it still has to be confirmed!)
     :param options: If you use Mode.OPTIONS, what options do you want?
     :param domain: If you use Mode.NUMERIC, what kind of number do you want? (A x is considered to be in the domain if domain(x) == True
+    :param regex: If you use Mode.REGEX, what is the pattern that you are asking for?
+    :param regex_description: If you use Mode.REGEX, what does this regex check for?
     :param config: What kind of styling do you want and some other slight things? (You usually will not need to touch this thing)
-    :return: The value that the user entered/selected. This will not always be a string: Return types for Mode.NORMAL: str; Mode.ALPHA: str; Mode.NUMERIC: int or float; Mode.OPTIONS: tuple(int, str).
+    :return: The value that the user entered/selected. This will not always be a string: Return types for Mode.NORMAL, Mode.ALPHA and Mode.REGEX: str; Mode.NUMERIC: int or float; Mode.OPTIONS: tuple(int, str).
     """
     # initialize config
     if config is None:
@@ -138,6 +174,10 @@ def input(question: str, mode: Mode = Mode.NORMAL, confirm: bool = False, defaul
     # for numeric
     if mode == Mode.NUMERIC:
         return _numeric_input_handler(question, confirm, domain, (int(default) if float(default) % 1 == 0 else float(default)) if default else None, config)
+
+    # for regex
+    if mode == Mode.REGEX:
+        return _regex_input_handler(question, confirm, regex, regex_description, default, config)
 
     # for options
     if mode == Mode.OPTIONS:
