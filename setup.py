@@ -19,7 +19,7 @@ setup(
         'Development Status :: 4 - Beta',
 
         'Intended Audience :: Developers',
-        'Topic :: Software Development :: Unix :: CLI',
+        'Topic :: Software Development :: User Interfaces',
         'Environment :: Console',
 
         'License :: OSI Approved :: MIT License',
