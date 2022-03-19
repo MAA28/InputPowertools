@@ -31,13 +31,6 @@ setup(
     package_dir={'': 'src'},
     packages=find_packages(where='src'),
     python_requires='>=3.6, <4',
-    install_requires=[
-        "setuptools>=42",
-        "wheel",
-        "colorama",
-        "docstring_parser",
-        "typing"
-    ],
     project_urls={  # Optional
         'Bug Reports': 'https://github.com/MAA28/InputPowertools/issues',
         'Source': 'https://github.com/MAA28/InputPowertools/'

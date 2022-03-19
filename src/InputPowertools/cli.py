@@ -1,6 +1,8 @@
 import re
 import sys
 import inspect
+
+import typic
 from colorama import Fore, Style
 from docstring_parser import parse
 
@@ -24,7 +26,8 @@ default_config = {
         'option': '\t\t',
         'option description': '\t\t\t',
         'flags': '\t\t\t '
-    }
+    },
+    'use emojis': True
 }
 
 
@@ -105,13 +108,8 @@ def run(function: callable, config=None):
                 if parameter.default != parameter.empty:
                     print(f"{config['prefix']['flags']}{config['color schema']['key']}Default: {config['color schema']['default']}{parameter.default}{Style.RESET_ALL}")
         else:
-            # do type check
-            for key in parameters:
-                if key not in function_parameters.keys():
-                    raise KeyError(f'\'{key}\' is not requested!')
+            try:
+                typic.al(function, strict=True)(**parameters)
+            except typic.constraints.error.ConstraintValueError as e:
+                print(f"{config['color schema']['error']}{'🛑 ' if config['use emojis'] else ''}Type Error: {e}{Style.RESET_ALL}")
 
-                parameter = function_parameters[key]
-                if not (parameter.annotation.__name__ == "_empty" or isinstance(parameters[key], parameter.annotation)):
-                    raise TypeError(f'{key} expected {parameter.annotation.__name__} but was given {parameters[key]}')
-
-            function(**parameters)
