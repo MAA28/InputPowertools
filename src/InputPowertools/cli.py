@@ -105,13 +105,6 @@ def run(function: callable, config=None):
                 if parameter.default != parameter.empty:
                     print(f"{config['prefix']['flags']}{config['color schema']['key']}Default: {config['color schema']['default']}{parameter.default}{Style.RESET_ALL}")
         else:
-            # do type check
-            for key in parameters:
-                if key not in function_parameters.keys():
-                    raise KeyError(f'\'{key}\' is not requested!')
 
-                parameter = function_parameters[key]
-                if not (parameter.annotation.__name__ == "_empty" or isinstance(parameters[key], parameter.annotation)):
-                    raise TypeError(f'{key} expected {parameter.annotation.__name__} but was given {parameters[key]}')
-
+            # decorate the function do type check https://github.com/seandstewart/typical/
             function(**parameters)
