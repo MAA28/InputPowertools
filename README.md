@@ -26,11 +26,7 @@ Result: 16
 ```
 #### Options
 ```
->>> print(f"Result: {input(
-    'Are you a what kind of person are you?',
-     Mode.OPTIONS,
-     options=['Cat person', 'Dog person', 'Bird person']
-)}")
+>>> print(f"Result: {input('Are you a what kind of person are you?', Mode.OPTIONS, options=['Cat person', 'Dog person', 'Bird person'])}")
 
 Are you a what kind of person are you? 
 1 -> Cat person
@@ -47,6 +43,8 @@ Result: (1, 'Dog person')
 ```
 ### Regex
 ```
+>>> print(f"Result: {input('What is your favorite hex color?', Mode.REGEX, regex=r'(#([a-fA-F0-9]{6}|[a-fA-F0-9]{3}))', regex_description='Hexadecimal Color. Something like #123 or #FF32CD')}")
+
 What is your favorite hex color?  >? red
 🛑 Please enter a value that fits this description: Hexadecimal Color. Something like #123 or #FF32CD
 What is your favorite hex color?  >? #F00
