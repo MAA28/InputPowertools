@@ -20,6 +20,6 @@ def test_cli(a, b: str, c: List[str], d: bool = False):
 
 if __name__ == '__main__':
     cli.run(test_cli)
-    # run python cli.py
-    # run python cli.py --help
-    # run python cli.py --a lol --b "this is a value with spaces" --c 4 2 "test123" --d
+    # run python example 1.py
+    # run python example 1.py --help
+    # run python example 1.py --a lol --b "this is a value with spaces" --c 4 2 "test123" --d
