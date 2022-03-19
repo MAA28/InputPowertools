@@ -1,4 +1,5 @@
 # Python stuff
+# Python
 dist/
 build/
 *.pyc
@@ -7,6 +8,3 @@ build/
 *.egg-info
 *.conf
 __pycache__
-
-# pycharm stuff
-.idea
