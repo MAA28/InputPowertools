@@ -73,7 +73,6 @@ def run(function: callable, config=None):
             parameter_list[1] = True
     parameters = dict(parameters_list)
 
-
     if len(function_parameters) == 0:
         # function doesn't take any parameters, so I just run the function
         function()
@@ -112,4 +111,3 @@ def run(function: callable, config=None):
                 typic.al(function, strict=True)(**parameters)
             except typic.constraints.error.ConstraintValueError as e:
                 print(f"{config['color schema']['error']}{'🛑 ' if config['use emojis'] else ''}Type Error: {e}{Style.RESET_ALL}")
-

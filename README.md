@@ -2,6 +2,10 @@
 > Eliminate the annoyances of getting input or building a cli in python!
 ## Prolog
 I love using **c**ommand **l**ine **i**nterfaces and I think most people like building these small tools as well, but its really annoying to have to build the interface between the user and your program, hence I build this python package to take care of this part for you.
+## Installation
+```shell
+$ pip install InputPowertools
+```
 ## Examples
 ### input()
 #### Alpha
@@ -75,4 +79,42 @@ Do you want to select "Malte"?
 2 -> no
 Select option [1-2]: (2) >? 1
 Result: Malte
+```
+## CLI
+### Guide
+```
+$  python examples/example\ 1.py
+
+For more information: examples/example 1.py --help
+```
+### Analysing the docstring and type hints to generate --help
+```
+$  python examples/example\ 1.py --help
+
+Some function
+  A function that is truly amazing... wow!
+Return: Some fascinating thing
+        Options:
+                --help
+                        Prints out information about the program.
+                         Type:    bool
+                         Default: False
+                --a
+                        Is a variable called a
+                --b
+                        Is a variable called b
+                         Type:    str
+                --c
+                        Is a variable called c
+                         Type:    list
+                --d
+                        Is a variable called d
+                         Type:    bool
+                         Default: False
+```
+### Analysing the function parameters to generate cli
+```
+$ python examples/example\ 1.py  --a lol --b "this is a value with spaces" --c 4 2 "test123" --d
+
+a='lol' b='this is a value with spaces' c=[4, 2, 'test123'] d=True
 ```
