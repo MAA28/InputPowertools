@@ -16,7 +16,7 @@ setup(
     author='MAA28',
     author_email='malteaschenbach@gmail.com',
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
 
         'Intended Audience :: Developers',
         'Topic :: Software Development :: User Interfaces',
