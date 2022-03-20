@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bdfffc69-2c6e-4f79-b91a-1e9ccc13ae96" name="Changes" comment="Changed version number">
+      <change afterPath="$PROJECT_DIR$/.idea/git_toolbox_prj.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +38,7 @@
     </file-type-list>
   </component>
   <component name="GitToolBoxStore">
+    <option name="projectConfigVersion" value="5" />
     <option name="recentBranches">
       <RecentBranches>
         <option name="branchesForRepo">
@@ -80,8 +81,8 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
-  <component name="RunManager" selected="Python.example 1">
-    <configuration name="example 1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Shell Script.build and test ship">
+    <configuration name="example 1" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="InputPowertools" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -125,15 +126,26 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="build and test ship" type="ShConfigurationType">
+      <option name="SCRIPT_TEXT" value="onefetch &amp;&amp; python3 -m build &amp;&amp; twine upload --verbose --repository testpypi dist/*" />
+      <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+      <option name="SCRIPT_PATH" value="" />
+      <option name="SCRIPT_OPTIONS" value="" />
+      <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+      <option name="INTERPRETER_PATH" value="/bin/bash" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="EXECUTE_IN_TERMINAL" value="true" />
+      <option name="EXECUTE_SCRIPT_FILE" value="false" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.example 2" />
       <item itemvalue="Python.example 1" />
+      <item itemvalue="Shell Script.build and test ship" />
     </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Python.example 1" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -145,6 +157,7 @@
       <updated>1647724729459</updated>
       <workItem from="1647724731864" duration="848000" />
       <workItem from="1647768373551" duration="1035000" />
+      <workItem from="1647777729186" duration="705000" />
     </task>
     <task id="LOCAL-00001" summary="Changed version number">
       <created>1647768680585</created>
