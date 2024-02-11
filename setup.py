@@ -29,7 +29,21 @@ setup(
     ],
     keywords='cli, command line',
     package_dir={'': 'src'},
-    requires=["colorama~=0.4.4","typical==2.8.0","setuptools==60.10.0"],
+    requires=[
+        "colorama~=0.4.4",
+        "typical==2.8.0",
+        "setuptools==60.10.0"
+        "wheel",
+        "docstring_parser",
+        "typing"
+    ],
+    install_requires=[
+        "setuptools>=42",
+        "wheel",
+        "colorama",
+        "docstring_parser",
+        "typing"
+    ],
     python_requires='>=3.6, <4',
     project_urls={  # Optional
         'Bug Reports': 'https://github.com/MAA28/InputPowertools/issues',
