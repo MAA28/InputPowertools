@@ -8,7 +8,7 @@ long_description = (here / 'README.md').read_text(encoding='utf-8')
 
 setup(
     name='InputPowertools',
-    version='1.0.1',
+    version='1.0.2',
     description='Kind of like a non intrusive addon for the standard input()',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -29,7 +29,7 @@ setup(
     ],
     keywords='cli, command line',
     package_dir={'': 'src'},
-    packages=find_packages(where='src'),
+    install_requirements=[line.strip() for open("requirements.txt").readlines()],
     python_requires='>=3.6, <4',
     project_urls={  # Optional
         'Bug Reports': 'https://github.com/MAA28/InputPowertools/issues',
